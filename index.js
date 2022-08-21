@@ -28,9 +28,9 @@ passportauth(passport);
 RouteConfig(tdList);
 
 tdList.get("/",(req,res)=>{
-    res.json({"msg":"success"});
+    res.json({"server":"running"});
 });
 
 tdList.listen(process.env.PORT,()=>dbconnect()
-.then(()=>console.log("server running database connected to port "+process.env.PORT))
+.then(()=>console.log("database connected and server running on port "+process.env.PORT))
 .catch((error)=>console.log("server running database connection failed"+error.message)));
