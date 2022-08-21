@@ -60,23 +60,24 @@ access      token
  */
 Router.get("/report",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
+        const {user} = req;
         const tasks = await TaskModel.find({user:user[0]._id,status:{$ne:"del"}},{_id:0, index:1, name:1, priority:1, status:1});
-        const delcount = await TaskModel.countDocuments({status:{$eq:"del"}});
-        let pencount=0;
-        let comcount=0;
-        let cancount=0;
+        const deleted = await TaskModel.countDocuments({user:user[0]._id,status:{$eq:"del"}});
+        let pending=0;
+        let completed=0;
+        let canceled=0;
         tasks.forEach((value)=>{
             if(value.status=="pen"){
-                pencount+=1;
+                pending+=1;
             }
             else if(value.status=="can"){
-                cancount+=1;
+                canceled+=1;
             }
             else{
-                comcount+=1;
+                completed+=1;
             }
         })
-        return res.status(200).json({message:"success",count:{pencount,comcount,cancount,delcount},tasks});
+        return res.status(200).json({message:"success",count:{pending,completed,canceled,deleted},tasks});
     }
     catch (error) {
         return res.status(500).json({ message:"failed", error: error.message });
@@ -93,6 +94,7 @@ access      token
  */
 Router.patch("/completed/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
+        const {user} = req;
         const index = req.params.index;
         const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
@@ -118,6 +120,7 @@ access      token
  */
 Router.patch("/cancel/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
+        const {user} = req;
         const index = req.params.index;
         const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
@@ -143,6 +146,7 @@ access      token
  */
 Router.delete("/delete/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
+        const {user} = req;
         const index = req.params.index;
         const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
