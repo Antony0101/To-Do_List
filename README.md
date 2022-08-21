@@ -7,14 +7,22 @@ A nodejs backend for to-do list app.
 # Running To-Do_List app
 
 create .env file in root directory of app with keys "MONGO_URL", "PORT", "JWT_PRIVATE_KEY".  
-"MONGO_URL" is the url of mongodb database. eg MONGO_URL=mongodb+srv://user:password@cluster.mongodb.net  
-"PORT" is the network port on which server listens. eg PORT=4000  
-"JWT_PRIVATE_KEY" is the secret key of jwt token. eg JWT_PRIVATE_KEY=secret34566  
+"MONGO_URL" is the url of mongodb database.   
+"PORT" is the network port on which server listens.  
+"JWT_PRIVATE_KEY" is the secret key of jwt token.    
+eg
+```
+MONGO_URL=mongodb+srv://user:password@cluster.mongodb.net  
+JWT_PRIVATE_KEY=secret34566
+PORT=4000
+```
 
 Make sure that nodejs environment is working.
 In root directory run  
-    `npm i`  
-    `npm run dev`  
+```
+    npm install  
+    npm run dev 
+```
     
 
 # Deployed URL
