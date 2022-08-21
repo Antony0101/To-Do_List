@@ -7,14 +7,20 @@ A nodejs backend for to-do list app.
 # Running To-Do_List app
 
 create .env file in root directory of app with keys "MONGO_URL", "PORT", "JWT_PRIVATE_KEY".  
-"MONGO_URL" is the url of mongodb database. eg MONGO_URL=mongodb+srv://user:password@cluster0.owtnv.mongodb.net  
+"MONGO_URL" is the url of mongodb database. eg MONGO_URL=mongodb+srv://user:password@cluster.mongodb.net  
 "PORT" is the network port on which server listens. eg PORT=4000  
 "JWT_PRIVATE_KEY" is the secret key of jwt token. eg JWT_PRIVATE_KEY=secret34566  
 
 Make sure that nodejs environment is working.
 In root directory run  
     `npm i`  
-    `npm run dev`    
+    `npm run dev`  
+    
+
+# Deployed URL
+
+This server is already deployed in [Cyclic nodejs deployment platform](https://app.cyclic.sh/).  
+The URL of the server is [https://rich-lapel-toad.cyclic.app](https://rich-lapel-toad.cyclic.app).
 
 
 # API paths
