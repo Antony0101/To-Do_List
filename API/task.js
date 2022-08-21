@@ -17,11 +17,13 @@ access      token
 Router.post("/create",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
         await validateCreate(req.body);
-        const task = req.body;
-        task.user = req.user[0]._id;
-        task.status = "pen";  //pen - pending
-        const newtask = await TaskModel.create(task);
-        return res.status(200).json({message:"success",newtask});
+        const taskdetails = req.body;
+        taskdetails.user = req.user[0]._id;
+        taskdetails.status = "pen";  //pen - pending
+        const newtask = await TaskModel.create(taskdetails);
+        const {index, name, priority, status} = newtask;
+        const task = {index, name, priority, status};
+        return res.status(200).json({message:"success",task});
     }
     catch (error) {
         return res.status(500).json({ message:"failed", error: error.message });
@@ -66,18 +68,24 @@ Router.get("/report",passport.authenticate("tokenauth",{session:false}),async (r
         let pending=0;
         let completed=0;
         let canceled=0;
+        const ptask=[];
+        const cotask=[];
+        const catask=[];
         tasks.forEach((value)=>{
             if(value.status=="pen"){
                 pending+=1;
+                ptask.push(value);
             }
             else if(value.status=="can"){
                 canceled+=1;
+                catask.push(value);
             }
             else{
                 completed+=1;
+                cotask.push(value);
             }
         })
-        return res.status(200).json({message:"success",count:{pending,completed,canceled,deleted},tasks});
+        return res.status(200).json({message:"success",count:{pending,completed,canceled,deleted},tasks:{pending:ptask,completed:cotask,canceled:catask}});
     }
     catch (error) {
         return res.status(500).json({ message:"failed", error: error.message });

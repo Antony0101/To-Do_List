@@ -127,24 +127,85 @@ Response body - json
     message - "failed"
     error - error message
 
-/task/create - Create a new task.
+/task/list - List all task of that user.
 
 ### request
-http operation - POST
+http operation - GET
 Header parameters - Bearer Token
 Path parameters - None
-Request body - json
-    name - Name of the task.
-    priority - Priority of the task. Should be a integer in range 1-9.
-eg. {"name":"task1",
-     "priority":"3"
-    }
+Request body - None
 
 ### response
 Response body - json
     success:
     message - "success"
-    newtask - details of the created task.
+    tasks - list of task created by that user
+    failure:
+    message - "failed"
+    error - error message
+
+/task/report - List count of tasks and task list of the user.
+
+### request
+http operation - GET
+Header parameters - Bearer Token
+Path parameters - None
+Request body - None
+
+### response
+Response body - json
+    success:
+    message - "success"
+    count - count of pending, completed, canceled and deleted task. 
+    tasks - list of task created by that user
+    failure:
+    message - "failed"
+    error - error message
+
+/task/completed/:index - Mark a pending task of that user as completed.
+
+### request
+http operation - Patch
+Header parameters - Bearer Token
+Path parameters - index of the task
+Request body - None
+
+### response
+Response body - json
+    success:
+    message - "success"
+    failure:
+    message - "failed"
+    error - error message
+
+/task/cancel/:index - Mark a pending task of that user as canceled.
+
+### request
+http operation - Patch
+Header parameters - Bearer Token
+Path parameters - index of the task
+Request body - None
+
+### response
+Response body - json
+    success:
+    message - "success"
+    failure:
+    message - "failed"
+    error - error message
+
+/task/delete/:index - Delete a task created by that user.
+
+### request
+http operation - Patch
+Header parameters - Bearer Token
+Path parameters - index of the task
+Request body - None
+
+### response
+Response body - json
+    success:
+    message - "success"
     failure:
     message - "failed"
     error - error message
