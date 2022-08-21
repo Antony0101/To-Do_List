@@ -16,12 +16,12 @@ access      token
  */
 Router.post("/create",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
-        await validateCreate(req.body.task);
-        const task = req.body.task;
+        await validateCreate(req.body);
+        const task = req.body;
         task.user = req.user[0]._id;
         task.status = "pen";  //pen - pending
         const newtask = await TaskModel.create(task);
-        return res.status(200).json({message:"success"});
+        return res.status(200).json({message:"success",newtask});
     }
     catch (error) {
         return res.status(500).json({ message:"failed", error: error.message });
@@ -31,14 +31,15 @@ Router.post("/create",passport.authenticate("tokenauth",{session:false}),async (
 
 /*
 Api         get
-path        /
+path        /list
 desc        display all tasks
 params      none
 access      token
  */
-Router.get("/",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
+Router.get("/list",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
-        const tasks = await TaskModel.find({status:{$ne:"del"}},{_id:0, index:1, name:1, priority:1, status:1});
+        const {user} = req; 
+        const tasks = await TaskModel.find({user:user[0]._id,status:{$ne:"del"}},{_id:0, index:1, name:1, priority:1, status:1});
         tasks.sort((a,b)=>{
             return(a.priority-b.priority);
         });
@@ -59,7 +60,7 @@ access      token
  */
 Router.get("/report",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
-        const tasks = await TaskModel.find({status:{$ne:"del"}},{_id:0, index:1, name:1, priority:1, status:1});
+        const tasks = await TaskModel.find({user:user[0]._id,status:{$ne:"del"}},{_id:0, index:1, name:1, priority:1, status:1});
         const delcount = await TaskModel.countDocuments({status:{$eq:"del"}});
         let pencount=0;
         let comcount=0;
@@ -93,7 +94,7 @@ access      token
 Router.patch("/completed/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
         const index = req.params.index;
-        const task = await TaskModel.findOne({index,status:{$ne:"del"}});
+        const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
         if(task.status=="can") throw new Error("task already cancelled");
         if(task.status=="pen"){
@@ -118,7 +119,7 @@ access      token
 Router.patch("/cancel/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
         const index = req.params.index;
-        const task = await TaskModel.findOne({index,status:{$ne:"del"}});
+        const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
         if(task.status=="com") throw new Error("task already completed");
         if(task.status=="pen"){
@@ -140,10 +141,10 @@ desc        create a new task
 params      index
 access      token
  */
-Router.delete("/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
+Router.delete("/delete/:index",passport.authenticate("tokenauth",{session:false}),async (req,res)=>{
     try {
         const index = req.params.index;
-        const task = await TaskModel.findOne({index,status:{$ne:"del"}});
+        const task = await TaskModel.findOne({user:user[0]._id,index,status:{$ne:"del"}});
         if(!task) throw new Error("wrong index");
         const task1 = await TaskModel.updateOne({index},{$set:{status:"del" }});
         if(task1.matchedCount!=1) throw new Error("delete failed");

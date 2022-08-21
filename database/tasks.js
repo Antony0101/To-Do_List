@@ -5,7 +5,6 @@ const TaskSchema = new Mongoose.Schema({
     user:{type:Mongoose.Types.ObjectId,ref:"Users",required:true},
     index:{type:Number},
     name:{type:String,required:true},
-    description:String,
     priority:{type:Number,required:true},
     status:{type:String,required:true},
 });

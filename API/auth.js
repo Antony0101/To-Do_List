@@ -16,15 +16,15 @@ access      all
  */
 Router.post("/signup",async (req,res)=>{
     try {
-        await validateSignup(req.body.user);
-        const user = req.body.user;
+        await validateSignup(req.body);
+        const user = req.body;
         await UserModel.userShouldNotExist(user);
         const newuser = await UserModel.create(user);
         const token = await UserModel.generateToken(newuser._id);
         return res.status(200).json({message:"success",token});
     }
     catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ message:"failed", error: error.message });
     }
 });
 
@@ -38,13 +38,13 @@ access      all
  */
 Router.post("/signin",async (req,res)=>{
     try {
-    await validateSignin(req.body.cred);
-    const user = await UserModel.findByIdAndPassword(req.body.cred);
+    await validateSignin(req.body);
+    const user = await UserModel.findByIdAndPassword(req.body);
     const token = await UserModel.generateToken(user._id);
     return res.status(200).json({message:"success",token});
     }
     catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ message:"failed", error: error.message });
     }
 });
 
@@ -67,7 +67,7 @@ Router.post("/signout",passport.authenticate("tokenauth",{session:false}),async 
         return res.status(200).json({message:"success"});
         }
         catch (error) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ message:"failed", error: error.message });
         }
 });
 
@@ -88,6 +88,6 @@ Router.post("/signoutall",passport.authenticate("tokenauth",{session:false}),asy
         return res.status(200).json({message:"success"});
         }
         catch (error) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ message:"failed", error: error.message });
         }
 });
