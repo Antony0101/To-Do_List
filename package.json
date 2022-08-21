@@ -10,13 +10,13 @@
   "author": "antony0101",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
-    "nodemon": "^2.0.19"
-  },
-  "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
