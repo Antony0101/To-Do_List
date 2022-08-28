@@ -27,8 +27,10 @@ In root directory run
 
 # Deployed URL
 
+The URL of the site is [https://antony0101.github.io/To_do_list_frontend/](https://antony0101.github.io/To_do_list_frontend/).  
 This server is already deployed in [Cyclic nodejs deployment platform](https://app.cyclic.sh/).  
-The URL of the server is [https://rich-lapel-toad.cyclic.app](https://rich-lapel-toad.cyclic.app).
+The URL of the server is [https://rich-lapel-toad.cyclic.app](https://rich-lapel-toad.cyclic.app).  
+Front-End respository is [https://github.com/Antony0101/To_do_list_frontend.git](https://github.com/Antony0101/To_do_list_frontend.git).  
 
 
 # API paths
